@@ -18,8 +18,8 @@ def clash2v2ray(share_link):
             "path": share_link.get('ws-path', '') or share_link.get('ws-opts', {}).get('path', ''),
             "tls": ''
         }
-        if share_link.get('skip-cert-verify') == True:
-            vmess_info['verify_cert'] = True
+        if share_link.get('skip-cert-verify') == False:
+            vmess_info['verify_cert'] = False
         if share_link.get('tls') and share_link['tls'] != False:
             vmess_info['tls'] = 'tls'
             vmess_info["sni"] = share_link.get('servername', '')
@@ -33,6 +33,7 @@ def clash2v2ray(share_link):
             vmess_info['host'] = share_link.get('h2-opts', {}).get('host', [])
             vmess_info["path"] = share_link.get('h2-opts', {}).get('path', '')
         elif vmess_info['net'] == 'http':
+            vmess_info["headers"] = share_link.get('http-opts', {}).get('headers', {})
             vmess_info["host"] = share_link.get('http-opts', {}).get('headers', {}).get('Host', [])
             vmess_info["path"] = share_link.get('http-opts', {}).get('path', [])
         if share_link.get('smux',{}).get('enabled', '') == True:
